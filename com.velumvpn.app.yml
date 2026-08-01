@@ -58,6 +58,9 @@ modules:
 
       - install -Dm755 velumvpn-wrapper.sh /app/bin/velumvpn-wrapper
 
+      # clash — алиас для mihomo (приложение проверяет оба имени)
+      - ln -sf /app/lib/velumvpn/resources/sidecar/mihomo /app/lib/velumvpn/resources/sidecar/clash
+
       - install -Dm755 mihomo-helper.sh /app/bin/mihomo-helper
 
       - install -Dm644 com.velumvpn.app.policy /app/share/polkit-1/actions/com.velumvpn.app.policy
