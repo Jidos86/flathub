@@ -78,7 +78,7 @@ modules:
       - type: script
         dest-filename: velumvpn-wrapper.sh
         commands:
-          - exec zypak-wrapper /app/lib/velumvpn/velumvpn --in-process-gpu "$@"
+          - exec zypak-wrapper /app/lib/velumvpn/velumvpn "$@"
 
       - type: script
         dest-filename: xdg-settings-stub.sh
