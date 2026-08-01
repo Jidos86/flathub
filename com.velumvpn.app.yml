@@ -57,6 +57,7 @@ modules:
       - install -Dm644 com.velumvpn.app.metainfo.xml /app/share/metainfo/com.velumvpn.app.metainfo.xml
 
       - install -Dm755 velumvpn-wrapper.sh /app/bin/velumvpn-wrapper
+      - install -Dm755 xdg-settings-stub.sh /app/bin/xdg-settings
 
       # clash — алиас для mihomo (приложение проверяет оба имени)
       - ln -sf /app/lib/velumvpn/resources/sidecar/mihomo /app/lib/velumvpn/resources/sidecar/clash
@@ -77,7 +78,12 @@ modules:
       - type: script
         dest-filename: velumvpn-wrapper.sh
         commands:
-          - exec zypak-wrapper /app/lib/velumvpn/velumvpn --disable-gpu --disable-software-rasterizer "$@"
+          - exec zypak-wrapper /app/lib/velumvpn/velumvpn --in-process-gpu "$@"
+
+      - type: script
+        dest-filename: xdg-settings-stub.sh
+        commands:
+          - exit 0
 
       - type: script
         dest-filename: mihomo-helper.sh
