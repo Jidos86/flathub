@@ -17,22 +17,21 @@ finish-args:
   - --filesystem=home
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.Flatpak
   - --system-talk-name=org.freedesktop.NetworkManager
   - --system-talk-name=org.freedesktop.PolicyKit1
   - --env=ELECTRON_OZONE_PLATFORM_HINT=auto
+  - --env=TMPDIR=/tmp
 
 modules:
   - name: velumvpn
     buildsystem: simple
     build-commands:
-      # Распаковываем pacman-пакет
       - bsdtar -xf velumvpn.pkg.tar.xz opt usr
 
-      # Копируем приложение
       - mkdir -p /app/lib/velumvpn
       - cp -r opt/VelumVPN/. /app/lib/velumvpn/
 
-      # Иконки
       - |
         for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
           src="opt/VelumVPN/resources/icons/${size}.png"
@@ -41,18 +40,16 @@ modules:
           fi
         done
 
-      # Desktop-файл (переименовываем в com.velumvpn.app)
       - install -Dm644 usr/share/applications/velumvpn.desktop /app/share/applications/com.velumvpn.app.desktop
       - desktop-file-edit --set-key=Icon --set-value=com.velumvpn.app /app/share/applications/com.velumvpn.app.desktop
 
-      # AppStream метаданные
       - install -Dm644 com.velumvpn.app.metainfo.xml /app/share/metainfo/com.velumvpn.app.metainfo.xml
 
-      # Права на ядро mihomo
-      - chmod +sx /app/lib/velumvpn/resources/sidecar/mihomo || true
-
-      # Скрипт-обёртка
       - install -Dm755 velumvpn-wrapper.sh /app/bin/velumvpn-wrapper
+
+      - install -Dm755 mihomo-helper.sh /app/bin/mihomo-helper
+
+      - install -Dm644 com.velumvpn.app.policy /app/share/polkit-1/actions/com.velumvpn.app.policy
 
     sources:
       - type: file
@@ -66,4 +63,12 @@ modules:
       - type: script
         dest-filename: velumvpn-wrapper.sh
         commands:
-          - exec /app/lib/velumvpn/velumvpn "$@"
+          - exec zypak-wrapper /app/lib/velumvpn/velumvpn "$@"
+
+      - type: script
+        dest-filename: mihomo-helper.sh
+        commands:
+          - exec pkexec /app/lib/velumvpn/resources/sidecar/mihomo "$@"
+
+      - type: file
+        path: com.velumvpn.app.policy
