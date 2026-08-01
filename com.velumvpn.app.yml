@@ -51,6 +51,7 @@ modules:
 
       - install -Dm644 usr/share/applications/velumvpn.desktop /app/share/applications/com.velumvpn.app.desktop
       - desktop-file-edit --set-key=Icon --set-value=com.velumvpn.app /app/share/applications/com.velumvpn.app.desktop
+      - desktop-file-edit --set-key=Exec --set-value="velumvpn-wrapper %U" /app/share/applications/com.velumvpn.app.desktop
 
       - install -Dm644 com.velumvpn.app.metainfo.xml /app/share/metainfo/com.velumvpn.app.metainfo.xml
 
