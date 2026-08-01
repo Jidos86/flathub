@@ -23,7 +23,7 @@
     </ul>
   </description>
 
-  <launchable type="desktop-id">velumvpn.desktop</launchable>
+  <launchable type="desktop-id">com.velumvpn.app.desktop</launchable>
 
   <url type="homepage">https://velum.uno</url>
   <url type="bugtracker">https://github.com/Jidos86/VelumVPN/issues</url>

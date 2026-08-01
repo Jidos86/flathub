@@ -34,11 +34,20 @@ modules:
 
       - |
         for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
-          src="opt/VelumVPN/resources/icons/${size}.png"
+          src="usr/share/icons/hicolor/${size}/apps/velumvpn.png"
           if [ -f "$src" ]; then
             install -Dm644 "$src" "/app/share/icons/hicolor/${size}/apps/com.velumvpn.app.png"
           fi
         done
+        # fallback: из resources/icons если пакет положил туда
+        if [ ! -f /app/share/icons/hicolor/256x256/apps/com.velumvpn.app.png ]; then
+          for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+            src="opt/VelumVPN/resources/icons/${size}.png"
+            if [ -f "$src" ]; then
+              install -Dm644 "$src" "/app/share/icons/hicolor/${size}/apps/com.velumvpn.app.png"
+            fi
+          done
+        fi
 
       - install -Dm644 usr/share/applications/velumvpn.desktop /app/share/applications/com.velumvpn.app.desktop
       - desktop-file-edit --set-key=Icon --set-value=com.velumvpn.app /app/share/applications/com.velumvpn.app.desktop
