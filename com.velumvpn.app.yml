@@ -72,6 +72,7 @@ modules:
       - type: script
         dest-filename: velumvpn-wrapper.sh
         commands:
+          - export PATH="/app/lib/velumvpn/resources/sidecar:$PATH"
           - exec zypak-wrapper /app/lib/velumvpn/velumvpn "$@"
 
       - type: script
